@@ -2,6 +2,8 @@
 
 A dynamic web app built with **HTML**, **CSS**, and **JavaScript** that helps students organize tasks, set goals, and track progress. It features gamified rewards like points, badges, and streaks, with a modern, responsive UI and local storage support.
 
+## Live website : https://pritisingh-09.github.io/gamified-study-planner/
+
 ## Table of Contents
 
 * [Features](#features)
