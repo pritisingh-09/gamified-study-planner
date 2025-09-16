@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner - Gamified Learning</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header with User Stats -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 class="logo">🎮 Smart Study Planner</h1>
+                    <p class="tagline">Level up your learning journey!</p>
+                </div>
+                
+                <div class="user-stats">
+                    <div class="level-display">
+                        <div class="level-info">
+                            <span class="level-label">Level</span>
+                            <span class="level-number" id="userLevel">1</span>
+                        </div>
+                        <div class="rank-badge" id="userRank">Beginner</div>
+                    </div>
+                    
+                    <div class="xp-container">
+                        <div class="xp-info">
+                            <span class="xp-current" id="currentXP">0</span>
+                            <span class="xp-divider">/</span>
+                            <span class="xp-needed" id="neededXP">100</span>
+                            <span class="xp-label">XP</span>
+                        </div>
+                        <div class="xp-bar">
+                            <div class="xp-fill" id="xpFill"></div>
+                            <div class="xp-particles" id="xpParticles"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="streak-display">
+                        <div class="streak-flame">🔥</div>
+                        <div class="streak-info">
+                            <span class="streak-number" id="streakNumber">0</span>
+                            <span class="streak-label">day streak</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="header-controls">
+                    <button class="theme-toggle btn btn--secondary" id="themeToggle">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-view="dashboard">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Dashboard</span>
+            </button>
+            <button class="nav-tab" data-view="tasks">
+                <span class="nav-icon">📚</span>
+                <span class="nav-text">Study Tasks</span>
+            </button>
+            <button class="nav-tab" data-view="achievements">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-text">Achievements</span>
+            </button>
+            <button class="nav-tab" data-view="analytics">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Analytics</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard View -->
+            <div class="view dashboard-view active" id="dashboardView">
+                <div class="motivational-section">
+                    <div class="quote-card">
+                        <div class="quote-text" id="dailyQuote">The expert in anything was once a beginner. 🌟</div>
+                        <button class="refresh-quote" id="refreshQuote">🔄</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="quick-stats">
+                        <div class="stat-card tasks-today">
+                            <div class="stat-icon">📋</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="tasksToday">0</div>
+                                <div class="stat-label">Tasks Today</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card completed-today">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="completedToday">0</div>
+                                <div class="stat-label">Completed</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card daily-progress">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="dailyProgress">0%</div>
+                                <div class="stat-label">Daily Progress</div>
+                                <div class="mini-progress">
+                                    <div class="mini-progress-fill" id="dailyProgressFill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card total-points">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalPoints">0</div>
+                                <div class="stat-label">Total Points</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="today-focus">
+                        <h2 class="section-title">🔥 Today's Focus</h2>
+                        <div class="focus-tasks" id="focusTasks">
+                            <!-- Today's priority tasks will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="recent-achievements">
+                        <h2 class="section-title">🏆 Recent Achievements</h2>
+                        <div class="achievement-showcase" id="recentAchievements">
+                            <!-- Recent badges will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks View -->
+            <div class="view tasks-view" id="tasksView">
+                <div class="tasks-header">
+                    <h2 class="page-title">📚 Study Tasks</h2>
+                    <div class="tasks-controls">
+                        <select class="form-control filter-select" id="categoryFilter">
+                            <option value="">All Categories</option>
+                        </select>
+                        <select class="form-control filter-select" id="priorityFilter">
+                            <option value="">All Priorities</option>
+                            <option value="high">High Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="low">Low Priority</option>
+                        </select>
+                        <select class="form-control filter-select" id="statusFilter">
+                            <option value="">All Tasks</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <button class="btn btn--primary add-task-btn" id="addTaskBtn">
+                            <span class="btn-icon">➕</span>
+                            Add Task
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tasks-container">
+                    <div class="tasks-list" id="tasksList">
+                        <!-- Tasks will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements View -->
+            <div class="view achievements-view" id="achievementsView">
+                <div class="achievements-header">
+                    <h2 class="page-title">🏆 Your Achievements</h2>
+                    <div class="achievement-stats">
+                        <div class="achievement-count">
+                            <span id="unlockedBadges">0</span> / <span id="totalBadges">0</span> unlocked
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="badges-grid" id="badgesGrid">
+                    <!-- Badges will be populated here -->
+                </div>
+                
+                <div class="level-progression">
+                    <h3 class="section-title">📈 Level Progression</h3>
+                    <div class="level-track">
+                        <div class="level-milestones" id="levelMilestones">
+                            <!-- Level milestones will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics View -->
+            <div class="view analytics-view" id="analyticsView">
+                <div class="analytics-header">
+                    <h2 class="page-title">📊 Learning Analytics</h2>
+                </div>
+                
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <h3 class="chart-title">📅 Weekly Progress</h3>
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="weeklyChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="productivity-stats">
+                        <h3 class="chart-title">🚀 Productivity Stats</h3>
+                        <div class="productivity-grid" id="productivityStats">
+                            <!-- Productivity statistics will be shown here -->
+                        </div>
+                    </div>
+                    
+                    <div class="streak-calendar-container">
+                        <h3 class="chart-title">🔥 Study Streak Calendar</h3>
+                        <div class="calendar-controls">
+                            <button class="calendar-nav-btn" id="prevMonth">‹</button>
+                            <div class="calendar-header">
+                                <span class="calendar-month" id="calendarMonth">September</span>
+                                <span class="calendar-year" id="calendarYear">2025</span>
+                            </div>
+                            <button class="calendar-nav-btn" id="nextMonth">›</button>
+                        </div>
+                        <div class="calendar-weekdays">
+                            <div class="calendar-weekday">Sun</div>
+                            <div class="calendar-weekday">Mon</div>
+                            <div class="calendar-weekday">Tue</div>
+                            <div class="calendar-weekday">Wed</div>
+                            <div class="calendar-weekday">Thu</div>
+                            <div class="calendar-weekday">Fri</div>
+                            <div class="calendar-weekday">Sat</div>
+                        </div>
+                        <div class="calendar-grid" id="streakCalendar">
+                            <!-- Calendar showing study streaks -->
+                        </div>
+                        <div class="calendar-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: var(--color-secondary);"></div>
+                                <span>No tasks</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color streak"></div>
+                                <span>Study day</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color today"></div>
+                                <span>Today</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Task Modal -->
+        <div class="modal hidden" id="taskModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle">✨ Add New Task</h3>
+                    <button class="modal-close" id="modalClose">&times;</button>
+                </div>
+                
+                <form class="task-form" id="taskForm">
+                    <div class="form-group">
+                        <label class="form-label" for="taskTitle">Task Title</label>
+                        <input type="text" class="form-control" id="taskTitle" placeholder="What do you want to accomplish?" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="taskDescription">Description</label>
+                        <textarea class="form-control" id="taskDescription" rows="3" placeholder="Add more details about this task..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="taskCategory">Category</label>
+                            <select class="form-control" id="taskCategory" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="taskPriority">Priority Level</label>
+                            <select class="form-control" id="taskPriority" required>
+                                <option value="low">🟢 Low (10 XP)</option>
+                                <option value="medium" selected>🟡 Medium (30 XP)</option>
+                                <option value="high">🔴 High (50 XP)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="taskDeadline">Deadline</label>
+                            <input type="date" class="form-control" id="taskDeadline" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="taskEstimatedTime">Estimated Time</label>
+                            <input type="text" class="form-control" id="taskEstimatedTime" placeholder="e.g., 2 hours">
+                        </div>
+                    </div>
+                    
+                    <div class="xp-preview">
+                        <div class="xp-preview-text">
+                            💎 You'll earn <span id="xpPreview">30</span> XP for completing this task!
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn--secondary" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn btn--primary" id="saveBtn">
+                            <span class="btn-icon">💾</span>
+                            Save Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Level Up Modal -->
+        <div class="modal hidden" id="levelUpModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content level-up-content">
+                <div class="level-up-animation">
+                    <div class="level-up-icon">🎉</div>
+                    <h2 class="level-up-title">Level Up!</h2>
+                    <div class="level-up-info">
+                        <div class="new-level">Level <span id="newLevel">2</span></div>
+                        <div class="new-rank" id="newRank">Student</div>
+                    </div>
+                    <div class="level-up-rewards">
+                        <p>You've unlocked new features and earned bonus XP!</p>
+                    </div>
+                    <button class="btn btn--primary" id="levelUpClose">Continue Learning! 🚀</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Unlock Modal -->
+        <div class="modal hidden" id="achievementModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content achievement-content">
+                <div class="achievement-animation">
+                    <div class="achievement-glow">
+                        <div class="achievement-badge" id="achievementBadge">🏆</div>
+                    </div>
+                    <h2 class="achievement-title">Achievement Unlocked!</h2>
+                    <div class="achievement-info">
+                        <div class="achievement-name" id="achievementName">First Steps</div>
+                        <div class="achievement-description" id="achievementDescription">Complete your first task</div>
+                    </div>
+                    <button class="btn btn--primary" id="achievementClose">Awesome! ✨</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chatbot -->
+        <div class="chatbot" id="chatbot">
+            <div class="chatbot-toggle" id="chatbotToggle">
+                <span class="chatbot-icon" id="chatbotIcon">🤖</span>
+                <div class="chat-notification" id="chatNotification"></div>
+            </div>
+            
+            <div class="chatbot-window hidden" id="chatbotWindow">
+                <div class="chatbot-header">
+                    <div class="chatbot-character-info">
+                        <span class="chatbot-character-emoji" id="chatbotCharacterEmoji">🤖</span>
+                        <div class="chatbot-character-details">
+                            <span class="chatbot-character-name" id="chatbotCharacterName">StudyBot</span>
+                            <span class="chatbot-status">Online</span>
+                        </div>
+                    </div>
+                    <div class="chatbot-controls">
+                        <button class="chatbot-control-btn" id="chatbotSettings" title="Character Settings">⚙️</button>
+                        <button class="chatbot-control-btn" id="chatbotMinimize" title="Minimize">−</button>
+                    </div>
+                </div>
+                
+                <div class="chatbot-messages" id="chatbotMessages">
+                    <!-- Messages will be populated here -->
+                </div>
+                
+                <div class="chatbot-input-container">
+                    <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Ask me anything about studying...">
+                    <button class="chatbot-send-btn" id="chatbotSend">📤</button>
+                </div>
+                
+                <div class="typing-indicator hidden" id="typingIndicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Character Selection Modal -->
+        <div class="modal hidden" id="characterModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content character-modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">🎭 Choose Your Study Companion</h3>
+                    <button class="modal-close" id="characterModalClose">&times;</button>
+                </div>
+                
+                <div class="character-selection">
+                    <div class="characters-grid" id="charactersGrid">
+                        <!-- Characters will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="fab" title="Quick Add Task">
+            <span class="fab-icon">➕</span>
+        </button>
+
+        <!-- Notification Container -->
+        <div class="notification-container" id="notificationContainer"></div>
+
+        <!-- Confetti Container -->
+        <div class="confetti-container" id="confettiContainer"></div>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
