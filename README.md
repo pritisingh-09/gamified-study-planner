@@ -13,6 +13,19 @@ A dynamic web app built with **HTML**, **CSS**, and **JavaScript** that helps st
 * [How to Contribute](#how-to-contribute)
 * [Contact](#contact)
 
+## Screenshots
+### 🏠 Dashboard
+<img src="./assets/Dashboard.jpeg" alt="Dashboard Screenshot" width="700">
+
+### ☀️ Light Mode
+<img src="./assets/light_mode.jpeg" alt="Light Mode Screenshot" width="700">
+
+### ⚡ Dynamic View
+<img src="./assets/Dynamic.jpeg" alt="Dynamic View Screenshot" width="700">
+
+### ⚡ Dynamic View (Alternate)
+<img src="./assets/Dynamic_2.jpeg" alt="Dynamic View 2 Screenshot" >
+
 ## Features
 
 * Add, edit, remove study tasks
